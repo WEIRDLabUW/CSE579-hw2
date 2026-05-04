@@ -16,19 +16,23 @@ from networks import PGPolicy, PGBaseline
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print('using device', device)
 
-torch.manual_seed(0)
-random.seed(0)
-np.random.seed(0)
-
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--task', type=str, default='pg', help='choose task, pg or actor_critic or sac')
     parser.add_argument('--test', action='store_true', default=False)
     parser.add_argument('--render', action='store_true', default=False)
     parser.add_argument('--env', type=str, default="pendulum", help='choose environment, pendulum or ant')
+    parser.add_argument('--seed', type=int, default=0, help='random seed')
     args = parser.parse_args()
     if args.render:
         os.environ["LD_PRELOAD"] = "/usr/lib/x86_64-linux-gnu/libGLEW.so"
+
+    torch.manual_seed(args.seed)
+    torch.cuda.manual_seed_all(args.seed)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
+    random.seed(args.seed)
+    np.random.seed(args.seed)
 
     if args.env == 'pendulum':
         env = gym.make("InvertedPendulum-v4", render_mode='human' if args.render else None)
@@ -40,6 +44,9 @@ if __name__ == '__main__':
         env = gym.wrappers.TimeLimit(env, max_episode_steps=max_episode_steps)
     else:
         raise ValueError('Invalid environment')
+
+    env.reset(seed=args.seed)
+    env.action_space.seed(args.seed)
 
     obs_size = env.observation_space.shape[0]
     ac_size = env.action_space.shape[0]
