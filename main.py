@@ -31,12 +31,12 @@ if __name__ == '__main__':
         os.environ["LD_PRELOAD"] = "/usr/lib/x86_64-linux-gnu/libGLEW.so"
 
     if args.env == 'pendulum':
-        env = gym.make("InvertedPendulum-v5", render_mode='human' if args.render else None)
+        env = gym.make("InvertedPendulum-v4", render_mode='human' if args.render else None)
         max_episode_steps = 200
         env = gym.wrappers.TimeLimit(env, max_episode_steps=max_episode_steps)
     elif args.env == 'ant':
         max_episode_steps = 500
-        env = gym.make("Ant-v5", render_mode='human' if args.render else None)
+        env = gym.make("Ant-v4", render_mode='human' if args.render else None)
         env = gym.wrappers.TimeLimit(env, max_episode_steps=max_episode_steps)
     else:
         raise ValueError('Invalid environment')
