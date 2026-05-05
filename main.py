@@ -68,7 +68,7 @@ if __name__ == '__main__':
         baseline.to(device)
 
         # Training hyperparameters
-        num_epochs = 150
+        num_epochs = 100
         batch_size = 64
         gamma = 0.99
         baseline_train_batch_size = 64
@@ -80,10 +80,10 @@ if __name__ == '__main__':
             simulate_policy_pg(env, policy, baseline, num_epochs=num_epochs, batch_size=batch_size,
                                gamma=gamma, baseline_train_batch_size=baseline_train_batch_size, device=device,
                                baseline_num_epochs=baseline_num_epochs, print_freq=print_freq, render=args.render)
-            torch.save(policy.state_dict(), 'pg_final.pth')
+            torch.save(policy.state_dict(), f'pg_{args.env}_final.pth')
         else:
             print('loading pretrained pg')
-            policy.load_state_dict(torch.load(f'pg_final.pth'))
+            policy.load_state_dict(torch.load(f'pg_{args.env}_final.pth'))
         evaluate(env, policy, num_validation_runs=100, render=args.render)
     else:
         num_train_steps = 30_000
@@ -144,10 +144,10 @@ if __name__ == '__main__':
                             num_eval_episodes=num_eval_episodes,
                             replay_buffer=replay_buffer))
 
-            agent.save(f'{args.task}_final.pth')
+            agent.save(f'{args.task}_{args.env}_final.pth')
         else:
             print('loading pretrained', args.task)
-            agent.load(f'{args.task}_final.pth')
+            agent.load(f'{args.task}_{args.env}_final.pth')
 
         # final evaluation
         evaluate_agent(env, agent, "final", num_episodes=100, verbose=True)

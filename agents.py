@@ -131,7 +131,7 @@ class GenericACAgent:
         torch.save(state, save_path)
 
     def load(self, load_path):
-        state = torch.load(load_path)
+        state = torch.load(load_path, map_location=self.device)
         self.actor.load_state_dict(state['actor'])
         self.critic.load_state_dict(state['critic'])
         self.critic_target.load_state_dict(state['critic_target'])
