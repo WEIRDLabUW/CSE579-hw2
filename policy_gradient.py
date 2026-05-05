@@ -15,10 +15,13 @@ def train_model(policy, baseline, trajs, policy_optim, baseline_optim, device, g
         actions_singletraj = traj['actions']
         rewards_singletraj = traj['rewards']
         returns_singletraj = np.zeros_like(rewards_singletraj)
-        running_returns = 0
-        for t in reversed(range(0, len(rewards_singletraj))):
-            running_returns = rewards_singletraj[t] + gamma * running_returns
-            returns_singletraj[t] = running_returns
+        #========== TODO: start ==========
+        # Compute the return-to-go for this trajectory.
+        # Hint: G_t = r[t] + gamma * r[t+1] + gamma^2 * r[t+2] + ... iterate t backwards as a running sum.
+
+
+
+        #========== TODO: END ==========
         states_all.append(states_singletraj)
         actions_all.append(actions_singletraj)
         returns_all.append(returns_singletraj)
@@ -27,7 +30,7 @@ def train_model(policy, baseline, trajs, policy_optim, baseline_optim, device, g
     returns = np.concatenate(returns_all)
 
     # Normalize the returns
-    returns = (returns - returns.mean()) / returns.std() + 1e-8
+    returns = (returns - returns.mean()) / (returns.std() + 1e-8)
 
     criterion = torch.nn.MSELoss()
     n = len(states)
