@@ -25,4 +25,4 @@ More details in the [assignment spec](https://courses.cs.washington.edu/courses/
 - `main.py` (hyperparameter tuning only)
 - `policy_gradient.py` — policy gradient TODOs
 - `actor_critic.py` — actor-critic TODOs
-- `sac.py` — SAC TODOs (extra credit)
+- `sac.py` — SAC TODOs
