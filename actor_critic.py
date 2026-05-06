@@ -28,7 +28,7 @@ class ActorCriticAgent(GenericACAgent):
         # Train the single Q function:
         # Hint: Step 1: Compute current Q predictions using the obs and action and self.critic()
         # Hint: Step 2: Compute q targets using reward + critic_target * not_done_no_max for next_obs and
-        # next_actions actions sampled from the current policy. Use torch.no_grad() for this step to disable
+        # next actions sampled from the current policy. Use torch.no_grad() for this step to disable
         # gradient flow to the critic_target and the actor.
         # Hint: Step 3: Compute Bellman error as mean squared error between q_predictions and q_targets
        

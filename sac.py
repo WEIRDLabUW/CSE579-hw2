@@ -9,7 +9,7 @@ class SACAgent(GenericACAgent):
         #========== TODO: start ==========
         # Sample actions and the log_prob of the actions from the actor given obs. Hint: This is the same as AC agent.
         # Get the two Q values from the double Q function critic and take the minimum value. Then calculate the actor loss which
-        # is defined by self.alpha * log_prob - actor_Q. Make sure that gradient does not flow through the alpha paramater. 
+        # is defined by self.alpha * log_prob - actor_Q. Make sure that gradient does not flow through the alpha parameter.
 
         
         #========== TODO: end ==========
@@ -18,7 +18,7 @@ class SACAgent(GenericACAgent):
         actor_loss.backward()
         self.actor_optimizer.step()
 
-        # Update the temperature parameter toachieve entropy close to the target entropy
+        # Update the temperature parameter to achieve entropy close to the target entropy
         self.log_alpha_optimizer.zero_grad()
         alpha_loss = (self.alpha *
                       (-log_prob - self.target_entropy).detach())
@@ -36,6 +36,7 @@ class SACAgent(GenericACAgent):
         # Hint step 2: Sample the two target Q values from the critic_target using next_obs and the sampled next_action. 
         # Calculate the target value by taking the min of the values and then subtracting self.alpha * log_prob
         # The target Q is the reward + (not_done_no_max * discount * target_value)
+        # Hint: make sure gradients don't flow through the target_Q
 
         
         # Hint step 3:

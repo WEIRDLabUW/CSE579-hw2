@@ -18,12 +18,14 @@ print('using device', device)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--task', type=str, default='pg', help='choose task, pg or actor_critic or sac')
+    parser.add_argument('--task', type=str, default='pg',
+                        help='task: pg (or policy_gradient), actor_critic (or ac), sac')
     parser.add_argument('--test', action='store_true', default=False)
     parser.add_argument('--render', action='store_true', default=False)
     parser.add_argument('--env', type=str, default="pendulum", help='choose environment, pendulum or ant')
     parser.add_argument('--seed', type=int, default=0, help='random seed')
     args = parser.parse_args()
+    args.task = {'policy_gradient': 'pg', 'ac': 'actor_critic'}.get(args.task, args.task)
     if args.render:
         os.environ["LD_PRELOAD"] = "/usr/lib/x86_64-linux-gnu/libGLEW.so"
 

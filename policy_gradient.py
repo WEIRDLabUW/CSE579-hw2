@@ -16,11 +16,14 @@ def train_model(policy, baseline, trajs, policy_optim, baseline_optim, device, g
         rewards_singletraj = traj['rewards']
         returns_singletraj = np.zeros_like(rewards_singletraj)
         #========== TODO: start ==========
-        # Compute the return-to-go for this trajectory.
-        # Hint: G_t = r[t] + gamma * r[t+1] + gamma^2 * r[t+2] + ... iterate t backwards as a running sum.
+        # Compute the return to go on the current batch of trajectories
+        # Hint: Go through all the trajectories in trajs and compute their return to go: discounted sum of rewards from that timestep to the end.
+        # Hint: This is easy to do if you go backwards in time and sum up the reward as a running sum.
+        # Hint: Remember that return to go is return = r[t] + gamma*r[t+1] + gamma^2*r[t+2] + .... Don't forget the discount!
 
 
 
+        # returns_singletraj = ...
         #========== TODO: END ==========
         states_all.append(states_singletraj)
         actions_all.append(actions_singletraj)
@@ -29,8 +32,11 @@ def train_model(policy, baseline, trajs, policy_optim, baseline_optim, device, g
     actions = np.concatenate(actions_all)
     returns = np.concatenate(returns_all)
 
-    # Normalize the returns
-    returns = (returns - returns.mean()) / (returns.std() + 1e-8)
+    # TODO: Normalize the returns by subtracting mean and dividing by std
+    # Hint: (return - return.mean()) / (return.std() + EPS), where EPS is a small constant for numerics
+    # TODO start
+    # returns = ...
+    # TODO end
 
     criterion = torch.nn.MSELoss()
     n = len(states)
@@ -48,6 +54,8 @@ def train_model(policy, baseline, trajs, policy_optim, baseline_optim, device, g
             # Hint: Regress the baseline from each state onto the above
             # computed return to go. You can use similar code to behavior cloning to do so. This should be
             # 2 lines of code
+            # Hint: baseline is a callable function
+            
 
 
 
@@ -61,7 +69,7 @@ def train_model(policy, baseline, trajs, policy_optim, baseline_optim, device, g
     baseline_pred = baseline(torch.from_numpy(states).float().to(device))
     #========== TODO: start ==========
     # Train policy by optimizing surrogate objective: -log prob * (return - baseline)
-    # Return is computed above, as well as log_probs and baselines.
+    # Hint: log_policy and baseline_pred are already computed above; use them directly.
     # Hint: Policy gradient is given by: \grad log prob(a|s)* (return - baseline)
     # Hint: Then simply compute the surrogate objective by taking the objective as -log prob * (return - baseline)
     # Hint: You can then use standard pytorch machinery to take *one* gradient step on the policy

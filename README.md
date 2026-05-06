@@ -10,6 +10,8 @@
 
     python main.py --task pg/actor_critic/sac --env pendulum/ant
 
+(Aliases: `pg = policy_gradient`, `ac = actor_critic`.)
+
 Examples:
 
     python main.py --task pg --env pendulum
